@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projeto — Referência Visual</title>
+  <style>
+    :root{ --bg:#0b1020; --text:#eaf0ff; --muted:#b9c6ff; --radius:14px; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header{ max-width: 980px; margin:0 auto; padding: 18px; }
+    h1{ margin:0 0 6px; font-size:18px; }
+    p{ margin:0; color: var(--muted); font-size:13px; line-height:1.4; }
+    .nav{ max-width:980px; margin: 8px auto 0; padding: 0 18px; display:flex; gap:10px; flex-wrap:wrap; }
+    a.navbtn{
+      text-decoration:none; color: var(--text);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      padding: 9px 12px; border-radius: 999px; font-size: 12.5px;
+    }
+    .wrap{ max-width:980px; margin:0 auto; padding: 18px; }
+    .frame{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+    }
+    img{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: 12px;
+    }
+    .cap{
+      margin-top:10px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height:1.4;
+    }
+    code{ color: #9cc0ff; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Projeto — Foto de Referência</h1>
+    <p>Use esta página como apoio visual (ex.: conferência de itens, conectores e premissas do projeto).</p>
+  </header>
+
+  <nav class="nav" aria-label="Navegação">
+    <a class="navbtn" href="index.html">Home (Processo)</a>
+    <a class="navbtn" href="manuais.html">Manuais técnicos</a>
+    <a class="navbtn" href="projeto.html">Projeto (foto)</a>
+  </nav>
+
+  <div class="wrap">
+    <div class="frame">
+      <img src="assets/projeto.jpg" alt="Foto do projeto" />
+      <p class="cap">
+        Coloque a imagem do projeto na pasta <code>assets/</code> com o nome <code>projeto.jpg</code>.
+        Se sua imagem for PNG, troque para <code>projeto.png</code> e ajuste o <code>src</code>.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
