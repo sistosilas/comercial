@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intranet Comercial — Processo de Venda</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#0f1730; --card:#111c3a;
+      --text:#eaf0ff; --muted:#b9c6ff; --line:#2b3a74;
+      --accent:#4f8cff; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% 10%, #1a2a6c33, transparent 60%),
+                  radial-gradient(900px 700px at 80% 0%, #4f8cff22, transparent 55%),
+                  radial-gradient(900px 700px at 70% 90%, #22c55e1a, transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    header{ padding: 22px 18px 10px; max-width: 1120px; margin: 0 auto; }
+    h1{ margin:0 0 6px; font-size: 20px; letter-spacing:.2px; }
+    .sub{ margin:0; color:var(--muted); font-size: 13px; line-height: 1.4; }
+
+    .topbar{
+      max-width:1120px; margin: 10px auto 0; padding: 0 18px;
+      display:flex; flex-wrap:wrap; gap:10px;
+    }
+    .navbtn{
+      appearance:none; border:1px solid rgba(255,255,255,.14);
+      background: rgba(10,15,35,.35);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      text-decoration:none;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .navbtn:hover{ border-color: rgba(79,140,255,.55); box-shadow: 0 0 0 3px rgba(79,140,255,.12); }
+
+    .wrap{ max-width: 1120px; margin: 0 auto; padding: 18px; }
+
+    .legend{
+      display:flex; flex-wrap:wrap; gap:10px 14px;
+      margin: 14px 0 18px; padding: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      font-size: 12px; color: var(--muted);
+    }
+    .pill{ display:inline-flex; align-items:center; gap:8px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(10,15,35,.35); }
+    .dot{ width:10px;height:10px;border-radius:50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(79,140,255,.18); }
+    .dot.ok{ background: var(--ok); box-shadow: 0 0 0 3px rgba(34,197,94,.18); }
+    .dot.warn{ background: var(--warn); box-shadow: 0 0 0 3px rgba(245,158,11,.18); }
+    .dot.bad{ background: var(--bad); box-shadow: 0 0 0 3px rgba(239,68,68,.18); }
+
+    .board{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      padding: 18px;
+      overflow:auto;
+    }
+    .flow{
+      min-width: 980px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-auto-rows: minmax(84px, auto);
+      gap: 18px 22px;
+      align-items: stretch;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    .node{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+      position: relative;
+    }
+    .node .k{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:6px; }
+    .tag{
+      font-size: 11px; letter-spacing:.4px; text-transform: uppercase;
+      color: rgba(234,240,255,.85);
+      background: rgba(79,140,255,.12);
+      border: 1px solid rgba(79,140,255,.25);
+      padding: 4px 8px; border-radius: 999px; white-space:nowrap;
+    }
+    .tag.ok{ background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.28); }
+    .tag.warn{ background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.28); }
+    .tag.bad{ background: rgba(239,68,68,.10); border-color: rgba(239,68,68,.24); }
+    .title{ font-weight: 650; font-size: 14px; margin: 0; line-height: 1.25; }
+    .desc{ margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+
+    .decision{ background: linear-gradient(180deg, rgba(245,158,11,.10), rgba(255,255,255,.02)); border-color: rgba(245,158,11,.22); }
+    .end{ background: linear-gradient(180deg, rgba(34,197,94,.12), rgba(255,255,255,.02)); border-color: rgba(34,197,94,.25); }
+
+    .btnrow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(10,15,35,.30);
+      color: var(--text);
+      text-decoration:none;
+      font-size: 12px;
+      line-height: 1;
+      white-space:nowrap;
+    }
+    .btn:hover{ border-color: rgba(79,140,255,.55); box-shadow: 0 0 0 3px rgba(79,140,255,.12); }
+    .btn.warn{ border-color: rgba(245,158,11,.35); }
+    .btn.ok{ border-color: rgba(34,197,94,.35); }
+
+    .down::after{ content:""; position:absolute; left: 50%; bottom: -18px; width: 2px; height: 18px; background: var(--line); transform: translateX(-50%); }
+    .arrow-down::before{ content:""; position:absolute; left: 50%; bottom: -24px; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--line); transform: translateX(-50%); }
+
+    @media (max-width: 720px){
+      header{ padding-top: 18px; }
+      h1{ font-size: 18px; }
+      .board{ padding: 14px; }
+      .flow{ min-width: 920px; }
+    }
+
+    footer{
+      max-width:1120px; margin: 0 auto;
+      padding: 10px 18px 26px;
+      color: rgba(185,198,255,.85);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .note{ border-left: 3px solid rgba(79,140,255,.55); padding-left: 10px; margin-top: 10px; }
+    a{ color: #9cc0ff; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Intranet Comercial — Conferência do Processo de Venda</h1>
+    <p class="sub">Home do time: fluxograma + atalhos para manuais e projetos.</p>
+  </header>
+
+  <nav class="topbar" aria-label="Navegação principal">
+    <a class="navbtn" href="index.html">Home (Processo)</a>
+    <a class="navbtn" href="manuais.html">Manuais técnicos</a>
+    <a class="navbtn" href="projeto.html">Projeto (foto)</a>
+  </nav>
+
+  <div class="wrap">
+    <div class="legend" aria-label="Legenda">
+      <span class="pill"><span class="dot"></span> Processo</span>
+      <span class="pill"><span class="dot warn"></span> Decisão / Conferência</span>
+      <span class="pill"><span class="dot ok"></span> Final / Aprovado</span>
+      <span class="pill"><span class="dot bad"></span> Voltar e corrigir</span>
+    </div>
+
+    <div class="board">
+      <div class="flow">
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:1;">
+          <div class="k">
+            <p class="title">1) Recebe a demanda e analisa tecnicamente</p>
+            <span class="tag">Processo</span>
+          </div>
+          <p class="desc">Diagnóstico técnico, compatibilidade, necessidade real, riscos e premissas.</p>
+          <div class="btnrow">
+            <a class="btn" href="manuais.html">Abrir manuais técnicos</a>
+          </div>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:2;">
+          <div class="k">
+            <p class="title">Conferência: requisitos técnicos estão claros?</p>
+            <span class="tag warn">Decisão</span>
+          </div>
+          <p class="desc">Se faltar info, coletar dados e evidências antes de formalizar proposta.</p>
+          <div class="btnrow">
+            <a class="btn warn" href="manuais.html">Checklist técnico</a>
+          </div>
+        </div>
+
+        <div class="node" style="grid-column:1;grid-row:2;">
+          <div class="k">
+            <p class="title">Voltar e coletar dados faltantes</p>
+            <span class="tag bad">Correção</span>
+          </div>
+          <p class="desc">Perguntas objetivas + fotos, modelos, aplicação, medidas, conexões, etc.</p>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:3;">
+          <div class="k">
+            <p class="title">2) Criar a proposta com layout da empresa</p>
+            <span class="tag">Processo</span>
+          </div>
+          <p class="desc">Itens, quantidades, condições, transportadora, prazo e observações técnicas.</p>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:4;">
+          <div class="k">
+            <p class="title">Conferência: proposta completa e coerente?</p>
+            <span class="tag warn">Decisão</span>
+          </div>
+          <p class="desc">Checar se não há divergência de itens/quantidades/condições/prazos/frete.</p>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:5;">
+          <div class="k">
+            <p class="title">3) Enviar texto que antecede o envio da proposta formal</p>
+            <span class="tag">Processo</span>
+          </div>
+          <p class="desc">Mensagem curta contextualizando e preparando o cliente para o PDF.</p>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:6;">
+          <div class="k">
+            <p class="title">4) Enviar a proposta formalizada em PDF</p>
+            <span class="tag">Processo</span>
+          </div>
+          <p class="desc">PDF oficial anexado. Evitar versões paralelas no mesmo canal.</p>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:7;">
+          <div class="k">
+            <p class="title">5) Enviar texto de formalização pedindo conferência</p>
+            <span class="tag">Processo</span>
+          </div>
+          <p class="desc">Cliente conferir: condições, quantidades, transportadora, prazo e dados de faturamento.</p>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:8;">
+          <div class="k">
+            <p class="title">6) Enviar áudio explicativo?</p>
+            <span class="tag warn">Opcional</span>
+          </div>
+          <p class="desc">Quando houver complexidade técnica, premissas ou múltiplas variações.</p>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:9;">
+          <div class="k">
+            <p class="title">Cliente confirmou conferência e está de acordo?</p>
+            <span class="tag warn">Decisão</span>
+          </div>
+          <p class="desc">Se houver divergências, corrigir proposta e reenviar PDF (versão única válida).</p>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:10;">
+          <div class="k">
+            <p class="title">7) Proposta aprovada?</p>
+            <span class="tag warn">Decisão</span>
+          </div>
+          <p class="desc">Se aprovado, iniciar conferência final dos dados cruciais antes do repasse interno.</p>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:11;">
+          <div class="k">
+            <p class="title">7.1) Conferir dados de faturamento</p>
+            <span class="tag warn">Conferência</span>
+          </div>
+          <p class="desc">Cliente, CNPJ, Inscrição Estadual e cadastro essencial.</p>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:12;">
+          <div class="k">
+            <p class="title">7.2) Existe pedido de compra (PO)?</p>
+            <span class="tag warn">Decisão</span>
+          </div>
+          <p class="desc">Se houver, comparar com a proposta e anexar X-PED e X-Item.</p>
+        </div>
+
+        <div class="node" style="grid-column:3;grid-row:12;">
+          <div class="k">
+            <p class="title">Comparar PO × Proposta + anexar X-PED / X-Item</p>
+            <span class="tag warn">Conferência</span>
+          </div>
+          <p class="desc">Itens, quantidades, valores, transportadora e condições. Registrar referências.</p>
+          <div class="btnrow">
+            <a class="btn ok" href="projeto.html">Ver foto do projeto (referência)</a>
+          </div>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:13;">
+          <div class="k">
+            <p class="title">7.3) Conferir transportadora</p>
+            <span class="tag warn">Conferência</span>
+          </div>
+          <p class="desc">Transportadora correta, modalidade e observações relevantes.</p>
+        </div>
+
+        <div class="node down arrow-down" style="grid-column:2;grid-row:14;">
+          <div class="k">
+            <p class="title">7.4) Conferir forma de pagamento</p>
+            <span class="tag warn">Conferência</span>
+          </div>
+          <p class="desc">Condição acordada, prazos e alinhamento com política comercial.</p>
+        </div>
+
+        <div class="node decision down arrow-down" style="grid-column:2;grid-row:15;">
+          <div class="k">
+            <p class="title">7.5) Comparar orçamento × PO (itens, quantidades, valores, transporte)</p>
+            <span class="tag warn">Conferência</span>
+          </div>
+          <p class="desc">Conferência final para evitar divergência em faturamento e retrabalho operacional.</p>
+        </div>
+
+        <div class="node end" style="grid-column:2;grid-row:16;">
+          <div class="k">
+            <p class="title">Conferência final OK → Liberar para próxima etapa</p>
+            <span class="tag ok">Aprovado</span>
+          </div>
+          <p class="desc">Pronto para seguir (triagem / faturamento / produção) com dados críticos validados.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="note">
+      Para adicionar novos botões por caixa: copie o bloco <strong>div class="btnrow"</strong> e aponte o <strong>href</strong> para a nova página.
+      Ex.: <code>href="manual_nav900.html"</code>.
+    </div>
+  </footer>
+</body>
+</html>
