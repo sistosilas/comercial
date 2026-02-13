@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manuais Técnicos — Intranet Comercial</title>
+  <style>
+    :root{ --bg:#0b1020; --text:#eaf0ff; --muted:#b9c6ff; --card:#111c3a; --radius:14px; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header{ max-width: 980px; margin:0 auto; padding: 18px; }
+    h1{ margin:0 0 6px; font-size:18px; }
+    p{ margin:0; color: var(--muted); font-size:13px; line-height:1.4; }
+    .nav{ max-width:980px; margin: 8px auto 0; padding: 0 18px; display:flex; gap:10px; flex-wrap:wrap; }
+    a.navbtn{
+      text-decoration:none; color: var(--text);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      padding: 9px 12px; border-radius: 999px; font-size: 12.5px;
+    }
+    .wrap{ max-width:980px; margin:0 auto; padding: 18px; }
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .t{ font-weight:650; margin:0 0 6px; font-size:14px; }
+    .d{ margin:0 0 10px; color: var(--muted); font-size:12.5px; line-height:1.35; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 8px 10px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(10,15,35,.30);
+      color: var(--text); text-decoration:none; font-size:12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Manuais Técnicos</h1>
+    <p>Central de documentos para consulta rápida durante análise técnica e montagem de proposta.</p>
+  </header>
+
+  <nav class="nav" aria-label="Navegação">
+    <a class="navbtn" href="index.html">Home (Processo)</a>
+    <a class="navbtn" href="manuais.html">Manuais técnicos</a>
+    <a class="navbtn" href="projeto.html">Projeto (foto)</a>
+  </nav>
+
+  <div class="wrap">
+    <div class="grid">
+      <div class="card">
+        <p class="t">Manual — Checklist de conferência técnica (modelo)</p>
+        <p class="d">Liste aqui os campos mínimos: aplicação, máquina, ano, controlador, sensores, conexões, etc.</p>
+        <a class="btn" href="#" onclick="alert('Troque este link para o PDF real: ex. assets/manual_checklist.pdf'); return false;">Abrir</a>
+      </div>
+
+      <div class="card">
+        <p class="t">Manual — Produto / Sistema (exemplo)</p>
+        <p class="d">Crie páginas/links por linha de produto: direção, controle de aplicação, chicotes, sensores.</p>
+        <a class="btn" href="#" onclick="alert('Troque este link para o PDF real.'); return false;">Abrir</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
